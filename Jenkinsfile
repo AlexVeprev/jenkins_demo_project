@@ -5,6 +5,7 @@ pipeline {
       steps {
         sh '''ls -la
         cat /etc/*release
+        sleep 900
 '''
       }
     }
