@@ -22,7 +22,7 @@ pipeline {
             }
             steps {
                 unstash 'linux_build'
-                sh 'ls -la'
+                sh 'ls -la build'
             }
         }
     }
