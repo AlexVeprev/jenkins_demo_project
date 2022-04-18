@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             agent {
-                dockerfile { true }
+                dockerfile true
             }
             steps {
                 sh 'cmake -B build -S .'
