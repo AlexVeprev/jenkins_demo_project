@@ -1,11 +1,13 @@
 pipeline {
-    agent {
-        docker { image 'ubuntu:20.04' }
-    }
+    agent none
     stages {
-        stage('Test') {
+        agent {
+            docker { image 'ubuntu:20.04' }
+        }
+        stage('Build') {
             steps {
-                sh 'cat /etc/*release'
+                sh 'apt update && apt install cmake g++'
+                sh 'cmake -B build -S .'
             }
         }
     }
