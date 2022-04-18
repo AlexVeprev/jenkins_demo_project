@@ -3,10 +3,9 @@ pipeline {
     stages {
         stage('Build') {
             agent {
-                docker { image 'ubuntu:20.04' }
+                dockerfile { true }
             }
             steps {
-                sh 'su -c "apt update"'
                 sh 'cmake -B build -S .'
             }
         }
