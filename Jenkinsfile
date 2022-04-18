@@ -10,6 +10,7 @@ pipeline {
                 cmake -B build -S .
                 cd build
                 make VERBOSE=1
+                ctest
                 cpack
                 '''
             }
