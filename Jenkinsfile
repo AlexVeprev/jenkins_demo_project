@@ -6,7 +6,7 @@ pipeline {
                 docker { image 'ubuntu:20.04' }
             }
             steps {
-                sh 'sudo apt update && sudo apt install cmake g++'
+                sh 'su -c "apt update"'
                 sh 'cmake -B build -S .'
             }
         }
