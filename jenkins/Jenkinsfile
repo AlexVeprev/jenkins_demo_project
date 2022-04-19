@@ -19,8 +19,8 @@ pipeline {
             }
         }
         stage('Test matrix') {
+            failFast true
             matrix {
-                failFast true
                 axes {
                    axis {
                        name 'OS'
