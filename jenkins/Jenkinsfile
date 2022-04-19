@@ -39,7 +39,7 @@ pipeline {
                             unstash 'linux_build'
                             sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
                             sh 'cat /etc/*release'
-                            sh 'jenkins/scripts/test.sh'
+                            sh 'jenkins/test.sh'
                         }
                     }
                 }
