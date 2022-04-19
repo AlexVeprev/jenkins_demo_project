@@ -32,7 +32,7 @@ pipeline {
                     }
                 }
                 stages {
-                    stage("Test ${OS}") {
+                    stage('Test') {
                         steps {
                             unstash 'linux_build'
                             sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
