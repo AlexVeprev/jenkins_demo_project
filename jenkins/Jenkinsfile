@@ -33,20 +33,13 @@ pipeline {
                     }
                 }
                 stages {
-                    // This stage is needed just to display OS in UI
-                    stage('Axis') {
-                        agent none
+                    stage('Test') {
                         steps {
                             script {
                                 stage("${OS}") {
                                     print "${OS}"
                                 }
                             }
-                        }
-                    }
-
-                    stage('Test') {
-                        steps {
                             unstash 'linux_build'
                             sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
                             sh 'cat /etc/*release'
