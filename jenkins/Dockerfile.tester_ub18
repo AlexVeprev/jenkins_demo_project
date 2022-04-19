@@ -1,0 +1,8 @@
+FROM ubuntu:18.04
+RUN apt update && \
+    apt -y install sudo && \
+    useradd -ms /bin/bash jenkins && \
+    adduser jenkins sudo && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER jenkins
+WORKDIR /home/jenkins
