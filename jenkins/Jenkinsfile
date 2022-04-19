@@ -3,7 +3,9 @@ pipeline {
     stages {
         stage('Build') {
             agent {
-                dockerfile true
+                dockerfile {
+                    filename 'jenkins/Dockerfile.builder'
+                }
             }
             steps {
                 sh '''
@@ -20,11 +22,16 @@ pipeline {
         }
         stage('Test') {
             agent {
-                docker { image 'ubuntu:20.04' }
+                dockerfile {
+                    filename 'jenkins/Dockerfile.tester_ub20'
+                }
             }
             steps {
                 unstash 'linux_build'
-                sh 'ls -la build'
+                sh '''
+                apt install -y ./build/intsum-*-Linux.deb
+                intsum 10
+                '''
             }
         }
     }
