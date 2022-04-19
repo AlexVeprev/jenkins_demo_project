@@ -7,13 +7,15 @@ pipeline {
             }
             steps {
                 sh '''
+                whoami
+                sudo apt update
                 cmake -B build -S .
                 cd build
                 make VERBOSE=1
                 ctest --output-on-failure
                 cpack -G DEB
                 '''
-                stash includes: 'build/intsum-*-Linux.deb', name: 'linux_build' 
+                stash includes: 'build/intsum-*-Linux.deb', name: 'linux_build'
             }
         }
         stage('Test') {
