@@ -4,5 +4,10 @@ RUN apt update && \
     useradd -ms /bin/bash jenkins && \
     adduser jenkins sudo && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+RUN wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB && \
+    apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB && \
+    rm GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB && \
+    echo "deb https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
+    apt update
 USER jenkins
 WORKDIR /home/jenkins
