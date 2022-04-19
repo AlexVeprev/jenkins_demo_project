@@ -19,15 +19,27 @@ pipeline {
             }
         }
         stage('Test') {
-            agent {
-                dockerfile {
-                    filename 'jenkins/Dockerfile.tester_ub20'
+            matrix {
+                axes {
+                   axis {
+                       name: 'OS'
+                       values: 'ub18', 'un20', 'ub22'
+                   }
                 }
-            }
-            steps {
-                unstash 'linux_build'
-                sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
-                sh 'jenkins/scripts/test.sh'
+                agent {
+                    dockerfile {
+                        filename "jenkins/Dockerfile.tester_${PLATFORM}"
+                    }
+                }
+                stages {
+                    stage {
+                        steps {
+                            unstash 'linux_build'
+                            sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
+                            sh 'jenkins/scripts/test.sh'
+                        }
+                    }
+                }
             }
         }
     }
