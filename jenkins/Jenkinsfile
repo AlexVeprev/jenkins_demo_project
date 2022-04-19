@@ -26,10 +26,8 @@ pipeline {
             }
             steps {
                 unstash 'linux_build'
-                sh '''
-                sudo apt install -y ./build/intsum-*-Linux.deb
-                intsum 10
-                '''
+                sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
+                sh 'jenkins/scripts/test.sh'
             }
         }
     }
