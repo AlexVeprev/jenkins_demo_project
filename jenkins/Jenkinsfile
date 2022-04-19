@@ -35,11 +35,6 @@ pipeline {
                 stages {
                     stage('Test') {
                         steps {
-                            script {
-                                stage("${OS}") {
-                                    print "${OS}"
-                                }
-                            }
                             unstash 'linux_build'
                             sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
                             sh 'cat /etc/*release'
