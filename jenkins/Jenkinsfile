@@ -18,12 +18,13 @@ pipeline {
                 stash includes: 'build/intsum-*-Linux.deb', name: 'linux_build'
             }
         }
-        stage('Test') {
+        stage('Test matrix') {
             matrix {
+                failFast true
                 axes {
                    axis {
                        name 'OS'
-                       values 'ub18', 'ub20', 'ub22'
+                       values 'ub18', 'ub20', 'ub22', 'deb'
                    }
                 }
                 agent {
@@ -32,10 +33,23 @@ pipeline {
                     }
                 }
                 stages {
+                    // This stage is needed just to display OS in UI
+                    stage('Axis') {
+                        agent none
+                        steps {
+                            script {
+                                stage("${OS}") {
+                                    print "${OS}"
+                                }
+                            }
+                        }
+                    }
+
                     stage('Test') {
                         steps {
                             unstash 'linux_build'
                             sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
+                            sh 'cat /etc/*release'
                             sh 'jenkins/scripts/test.sh'
                         }
                     }
