@@ -23,7 +23,7 @@ pipeline {
                 axes {
                    axis {
                        name 'OS'
-                       values 'ub18', 'un20', 'ub22'
+                       values 'ub18', 'ub20', 'ub22'
                    }
                 }
                 agent {
