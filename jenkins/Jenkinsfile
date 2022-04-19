@@ -28,11 +28,11 @@ pipeline {
                 }
                 agent {
                     dockerfile {
-                        filename "jenkins/Dockerfile.tester_${PLATFORM}"
+                        filename "jenkins/Dockerfile.tester_${OS}"
                     }
                 }
                 stages {
-                    stage {
+                    stage("Test ${OS}") {
                         steps {
                             unstash 'linux_build'
                             sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
