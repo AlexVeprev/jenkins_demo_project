@@ -27,7 +27,7 @@ pipeline {
             steps {
                 unstash 'linux_build'
                 sh '''
-                apt install -y ./build/intsum-*-Linux.deb
+                sudo apt install -y ./build/intsum-*-Linux.deb
                 intsum 10
                 '''
             }
