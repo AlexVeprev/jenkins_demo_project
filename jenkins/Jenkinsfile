@@ -22,8 +22,8 @@ pipeline {
             matrix {
                 axes {
                    axis {
-                       name: 'OS'
-                       values: 'ub18', 'un20', 'ub22'
+                       name 'OS'
+                       values 'ub18', 'un20', 'ub22'
                    }
                 }
                 agent {
