@@ -9,7 +9,7 @@ pipeline {
                         httpMode: 'POST', \
                         url: 'https://api.github.com//repos/AlexVeprev/github_ci_workshop_2022/releases', \
                         authentication: "token_github_releases", \
-                        requestBody: '{"tag_name":"v0.2.10","name":"v0.2.10"}'
+                        requestBody: '{"tag_name":"v0.2.12","name":"v0.2.12"}'
                     println('Status: '+response.status)
                     println('Response: '+response.content)
                     def parsed_response = readJSON text: response.content
