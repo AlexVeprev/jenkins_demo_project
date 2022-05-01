@@ -2,47 +2,9 @@ pipeline {
     agent none
     stages {
         stage('Build') {
-            agent {
-                dockerfile {
-                    filename 'jenkins/Dockerfile.builder'
-                }
-            }
+            agent any
             steps {
-                sh '''
-                cmake -B build -S .
-                cd build
-                make VERBOSE=1
-                ctest --output-on-failure
-                cpack -G DEB
-                '''
-                stash includes: 'build/intsum-*-Linux.deb', name: 'linux_build'
-            }
-        }
-        stage('Test matrix') {
-            failFast true
-            matrix {
-                axes {
-                   axis {
-                       name 'OS'
-                       values 'ub18', 'ub20', 'ub22', 'deb'
-                   }
-                }
-                agent {
-                    dockerfile {
-                        filename "jenkins/Dockerfile.tester_${OS}"
-                    }
-                }
-                stages {
-                    stage('Test') {
-                        steps {
-                            echo "Running for ${OS}"
-                            unstash 'linux_build'
-                            sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
-                            sh 'cat /etc/*release'
-                            sh 'jenkins/test.sh'
-                        }
-                    }
-                }
+                httpRequest("https://api.github.com/users")
             }
         }
     }
