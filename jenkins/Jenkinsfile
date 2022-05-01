@@ -4,7 +4,17 @@ pipeline {
         stage('Build') {
             agent any
             steps {
-                httpRequest("https://api.github.com/users")
+                script {
+                    response = httpRequest \
+                        httpMode: 'POST', \
+                        url: 'https://api.github.com//repos/AlexVeprev/github_ci_workshop_2022/releases', \
+                        authentication: "token_github_releases", \
+                        requestBody: '{"tag_name":"v0.2.10","name":"v0.2.10"}'
+                    println('Status: '+response.status)
+                    println('Response: '+response.content)
+                    def parsed_response = readJSON text: response.content
+                    println('Parsed ID: '+parsed_response.id)
+                }
             }
         }
     }
