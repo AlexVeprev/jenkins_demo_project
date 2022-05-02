@@ -1,10 +1,14 @@
 pipeline {
     agent none
+    parameters {
+        string(name: 'version', defaultValue: '', description: 'Version to be used for release')
+    }
     stages {
         stage('Build') {
             agent any
             steps {
                 script {
+                    println(params.version)
                     response = httpRequest \
                         httpMode: 'POST', \
                         url: 'https://api.github.com//repos/AlexVeprev/github_ci_workshop_2022/releases', \
