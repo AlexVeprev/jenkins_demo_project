@@ -45,5 +45,38 @@ pipeline {
                 }
             }
         }
+        stage('Release') {
+            agent any
+            when {
+                buildingTag()
+            }
+            steps {
+                unstash 'linux_build'
+                // Groovy variant of jenkins/make_release.sh
+                // TODO: implement in shared library
+                script {
+                    response = httpRequest \
+                        httpMode: 'POST', \
+                        url: GIT_URL.replace(".git", "/releases").replace("github.com", "api.github.com/repos"), \
+                        authentication: "token_github_releases", \
+                        requestBody: "{\"tag_name\":\"${TAG_NAME}\",\"name\":\"${TAG_NAME}\"}", \
+                        consoleLogResponseBody: true
+
+                    def parsed_response = readJSON text: response.content
+                    def release_id = parsed_response.id
+
+                    def asset = findFiles(glob: '**/*.deb')[0]
+
+                    httpRequest \
+                        httpMode: 'POST', \
+                        url: GIT_URL.replace(".git", "/releases/").replace("github.com", "uploads.github.com/repos") + release_id + "/assets?name=" + asset.name, \
+                        authentication: "token_github_releases", \
+                        uploadFile: asset.path, \
+                        multipartName: asset.name, \
+                        timeout: 900, \
+                        consoleLogResponseBody: true
+                }
+            }
+        }
     }
 }
