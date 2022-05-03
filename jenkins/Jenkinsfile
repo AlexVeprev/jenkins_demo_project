@@ -2,22 +2,72 @@ pipeline {
     agent none
     stages {
         stage('Build') {
+            agent {
+                dockerfile {
+                    filename 'jenkins/Dockerfile.builder'
+                }
+            }
+            steps {
+                sh '''
+                cmake -B build -S .
+                cd build
+                make VERBOSE=1
+                ctest --output-on-failure
+                cpack -G DEB
+                '''
+                stash includes: 'build/intsum-*-Linux.deb', name: 'linux_build'
+            }
+        }
+        stage('Test matrix') {
+            failFast true
+            matrix {
+                axes {
+                   axis {
+                       name 'OS'
+                       values 'ub18', 'ub20', 'ub22', 'deb'
+                   }
+                }
+                agent {
+                    dockerfile {
+                        filename "jenkins/Dockerfile.tester_${OS}"
+                    }
+                }
+                stages {
+                    stage('Test') {
+                        steps {
+                            echo "Running for ${OS}"
+                            unstash 'linux_build'
+                            sh 'sudo apt install -y ./build/intsum-*-Linux.deb'
+                            sh 'cat /etc/*release'
+                            sh 'jenkins/test.sh'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Release') {
             agent any
             when {
                 buildingTag()
             }
             steps {
+                unstash 'linux_build'
                 script {
-                    println(TAG_NAME)
                     response = httpRequest \
                         httpMode: 'POST', \
-                        url: 'https://api.github.com//repos/AlexVeprev/github_ci_workshop_2022/releases', \
+                        url: GIT_URL.replace(".git", "/releases").replace("github.com", "api.github.com"), \
                         authentication: "token_github_releases", \
-                        requestBody: "{\"tag_name\":\"${TAG_NAME}\",\"name\":\"${TAG_NAME}\"}"
-                    println('Status: '+response.status)
-                    println('Response: '+response.content)
+                        requestBody: "{\"tag_name\":\"${TAG_NAME}\",\"name\":\"${TAG_NAME}\"}", \
+                        consoleLogResponseBody: true
                     def parsed_response = readJSON text: response.content
-                    println('Parsed ID: '+parsed_response.id)
+                    def release_id = parsed_response.id
+
+                    httpRequest \
+                        httpMode: 'POST', \
+                        url: GIT_URL.replace(".git", "/releases/").replace("github.com", "uploads.github.com") + release_id + "/assets?name=" + "test.deb", \
+                        uploadFile: "./build/intsum-0.1-Linux.deb", \
+                        timeout: 900, \
+                        consoleLogResponseBody: true
                 }
             }
         }
