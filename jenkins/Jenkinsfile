@@ -52,6 +52,8 @@ pipeline {
             }
             steps {
                 unstash 'linux_build'
+                // Groovy variant of jenkins/make_release.sh
+                // TODO: implement in shared library
                 script {
                     response = httpRequest \
                         httpMode: 'POST', \
