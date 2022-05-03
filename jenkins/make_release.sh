@@ -1,3 +1,5 @@
+
+# Bash variant was implemented as PoC and kept for reference, Groovy variant is actually used (see Jenkinsfile).
 set -e -x
 
 REPO=$1
