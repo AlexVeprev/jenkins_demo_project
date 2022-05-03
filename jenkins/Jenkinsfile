@@ -55,7 +55,7 @@ pipeline {
                 script {
                     response = httpRequest \
                         httpMode: 'POST', \
-                        url: GIT_URL.replace(".git", "/releases").replace("github.com", "api.github.com"), \
+                        url: GIT_URL.replace(".git", "/releases").replace("github.com", "api.github.com/repos"), \
                         authentication: "token_github_releases", \
                         requestBody: "{\"tag_name\":\"${TAG_NAME}\",\"name\":\"${TAG_NAME}\"}", \
                         consoleLogResponseBody: true
@@ -64,7 +64,7 @@ pipeline {
 
                     httpRequest \
                         httpMode: 'POST', \
-                        url: GIT_URL.replace(".git", "/releases/").replace("github.com", "uploads.github.com") + release_id + "/assets?name=" + "test.deb", \
+                        url: GIT_URL.replace(".git", "/releases/").replace("github.com", "uploads.github.com/repos") + release_id + "/assets?name=" + "test.deb", \
                         uploadFile: "./build/intsum-0.1-Linux.deb", \
                         timeout: 900, \
                         consoleLogResponseBody: true
