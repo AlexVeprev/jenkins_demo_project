@@ -2,9 +2,11 @@
 
 **Goal**: repeat the same workflow as https://github.com/AlexVeprev/github_actions_demo_project
 
+**Status**: done
+
 # Links:
 
-- https://www.jenkins.io/doc/book/pipeline/syntax/
+- [Pipeline Syntax](https://www.jenkins.io/doc/book/pipeline/syntax/)
 - Video [Complete Jenkins Pipeline Tutorial | Jenkinsfile explained](https://www.youtube.com/watch?v=7KCS70sCoK0)
 
 # Instruction
