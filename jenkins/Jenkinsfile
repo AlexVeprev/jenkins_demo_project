@@ -5,7 +5,7 @@ pipeline {
             agent {
                 docker {
                     image 'ghcr.io/alexveprev/jenkins_demo_project/demo_builder:latest'
-                    registryUrl 'ghcr.io'
+                    registryUrl 'https://ghcr.io'
                     registryCredentialsId 'ghcr_token'
                 }
                 //
@@ -38,7 +38,7 @@ pipeline {
                 agent {
                     docker {
                         image "ghcr.io/alexveprev/jenkins_demo_project/demo_tester:${OS}"
-                        registryUrl 'ghcr.io'
+                        registryUrl 'https://ghcr.io'
                         registryCredentialsId 'ghcr_token'
                     }
                     //
