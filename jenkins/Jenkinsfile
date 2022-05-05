@@ -3,9 +3,16 @@ pipeline {
     stages {
         stage('Build') {
             agent {
-                dockerfile {
-                    filename 'jenkins/Dockerfile.builder'
+                docker {
+                    image 'ghcr.io/alexveprev/jenkins_demo_project/demo_builder:latest'
+                    registryCredentialsId 'ghcr_token'
                 }
+                //
+                // Alternative: build the image on the fly
+                //
+                // dockerfile {
+                //     filename "jenkins/Dockerfile.builder"
+                // }
             }
             steps {
                 sh '''
@@ -28,9 +35,16 @@ pipeline {
                    }
                 }
                 agent {
-                    dockerfile {
-                        filename "jenkins/Dockerfile.tester_${OS}"
+                    docker {
+                        image "ghcr.io/alexveprev/jenkins_demo_project/demo_tester:${OS}"
+                        registryCredentialsId 'ghcr_token'
                     }
+                    //
+                    // Alternative: build images on the fly
+                    //
+                    // dockerfile {
+                    //     filename "jenkins/Dockerfile.tester_${OS}"
+                    // }
                 }
                 stages {
                     stage('Test') {
