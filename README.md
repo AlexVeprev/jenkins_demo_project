@@ -32,7 +32,7 @@
 
 4. As alternative (or addition) to statically configured Jenkins agent(s) from item 3 configure Docker Cloud using [Jenkins Docker Plugin](https://plugins.jenkins.io/docker-plugin/) to create Jenkins agents dynamically:
    1. Install Docker to host and [configure](https://plugins.jenkins.io/docker-plugin/#plugin-content-docker-environment) it.
-   2. Prepare Docker images for dynamic runners, images should contain jre (see examples in `jenkins/Dockerfile.agent_*`.
+   2. Prepare Docker images for dynamic runners, images should contain jre (see examples in `jenkins/Dockerfile.agent_*`).
    3. Configure Docker Cloud through Jenkins UI.
 
 4. Create project for GitHub; you'll need to add personal access token and some other secrets (see Jenkinsfile) to Credentials.
