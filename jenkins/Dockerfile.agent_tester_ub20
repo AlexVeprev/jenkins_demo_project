@@ -1,0 +1,17 @@
+FROM ubuntu:20.04
+RUN ln -snf /usr/share/zoneinfo/Europe/Moscow /etc/localtime && echo Europe/Moscow > /etc/timezone && \
+    apt update && \
+    apt -y install sudo git wget gnupg openjdk-11-jre && \
+    wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB && \
+    apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB && \
+    rm GPG-PUB-KEY-INTEL-SW-PRODUCTS-2023.PUB && \
+    echo "deb https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
+    apt update
+
+RUN groupadd -g 1000 jenkins && \
+    useradd -d /home/jenkins -u 1000 -g 1000 -m jenkins && \
+    adduser jenkins sudo && \
+    echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+USER jenkins
+WORKDIR /home/jenkins

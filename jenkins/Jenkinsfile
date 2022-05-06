@@ -3,17 +3,26 @@ pipeline {
     stages {
         stage('Build') {
             agent {
-                docker {
-                    image 'ghcr.io/alexveprev/jenkins_demo_project/demo_builder:latest'
-                    registryUrl 'https://ghcr.io'
-                    registryCredentialsId 'ghcr_token'
-                }
                 //
-                // Alternative: build the image on the fly
+                // OPTION #1: use image from GitHub Container Registry
+                //
+                // docker {
+                //     image 'ghcr.io/alexveprev/jenkins_demo_project/demo_builder:latest'
+                //     registryUrl 'https://ghcr.io'
+                //     registryCredentialsId 'ghcr_token'
+                // }
+
+                //
+                // OPTION #2: build the image on the fly
                 //
                 // dockerfile {
                 //     filename "jenkins/Dockerfile.builder"
                 // }
+
+                //
+                // OPTION #3: use Docker Cloud (should be pre-configured), uses GitHub Container Registry under the hood
+                //
+                label "docker-cloud-builder"
             }
             steps {
                 sh '''
@@ -36,17 +45,25 @@ pipeline {
                    }
                 }
                 agent {
-                    docker {
-                        image "ghcr.io/alexveprev/jenkins_demo_project/demo_tester:${OS}"
-                        registryUrl 'https://ghcr.io'
-                        registryCredentialsId 'ghcr_token'
-                    }
                     //
-                    // Alternative: build images on the fly
+                    // OPTION #1: use image from GitHub Container Registry
+                    //
+                    // docker {
+                    //     image "ghcr.io/alexveprev/jenkins_demo_project/demo_tester:${OS}"
+                    //     registryUrl 'https://ghcr.io'
+                    //     registryCredentialsId 'ghcr_token'
+                    // }
+                    //
+                    // OPTION #2: build images on the fly
                     //
                     // dockerfile {
                     //     filename "jenkins/Dockerfile.tester_${OS}"
                     // }
+
+                    //
+                    // OPTION #3: use Docker Cloud (should be pre-configured), uses GitHub Container Registry under the hood
+                    //
+                    label "docker-cloud-tester-${OS}"
                 }
                 stages {
                     stage('Test') {
