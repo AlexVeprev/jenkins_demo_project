@@ -36,4 +36,5 @@
 
 TODOs: 
 - [ ] Prepare more precise Dockerfile for Jenkins controller with all the needed plugins.
+- [ ] Prepare more optimized (from size perspective) Docker images for builder and testers (including images with for dynamic agents).
 - [ ] Describe steps more precisely where makes sense.
