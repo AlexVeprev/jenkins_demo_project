@@ -14,7 +14,7 @@
 1. Configure 2-3 or more VMs:
      - For Jenkins controller (master).
      - For Jenkins agent(s).
-     - For Docker server(s), i.e. Docker Cloud (option 3 in `Jenkinsfile`).
+     - For Docker server(s), i.e. Docker Cloud (item 4 below and option 3 in `Jenkinsfile`).
 
 2. Install Jenkins controller. E.g. using Docker. Follow this [instruction](https://www.jenkins.io/doc/book/installing/docker/), skip running `docker:dind`.
 
