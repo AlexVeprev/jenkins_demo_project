@@ -14,13 +14,20 @@ function preare_image() {
 
     docker build -f ${SCRIPTPATH}/${DOCKERFILE} -t ghcr.io/${USER}/jenkins_demo_project/${IMAGE_TAG} .
     docker push ghcr.io/${USER}/jenkins_demo_project/${IMAGE_TAG}
-    docker rmi ghcr.io/${USER}/jenkins_demo_project/${IMAGE_TAG}
+    #docker rmi ghcr.io/${USER}/jenkins_demo_project/${IMAGE_TAG}
 }
 
-preare_image Dockerfile.builder     demo_builder:latest
-preare_image Dockerfile.tester_deb  demo_tester:deb
-preare_image Dockerfile.tester_ub18 demo_tester:ub18
-preare_image Dockerfile.tester_ub20 demo_tester:ub20
-preare_image Dockerfile.tester_ub22 demo_tester:ub22
+#preare_image Dockerfile.builder     demo_builder:latest
+#preare_image Dockerfile.tester_deb  demo_tester:deb
+#preare_image Dockerfile.tester_ub18 demo_tester:ub18
+#preare_image Dockerfile.tester_ub20 demo_tester:ub20
+#preare_image Dockerfile.tester_ub22 demo_tester:ub22
+
+# For Docker Cloud
+preare_image Dockerfile.agent_builder     demo_jenkins_agent_builder:latest
+preare_image Dockerfile.agent_tester_deb  demo_jenkins_agent_tester:deb
+preare_image Dockerfile.agent_tester_ub18 demo_jenkins_agent_tester:ub18
+preare_image Dockerfile.agent_tester_ub20 demo_jenkins_agent_tester:ub20
+preare_image Dockerfile.agent_tester_ub22 demo_jenkins_agent_tester:ub22
 
 docker logout

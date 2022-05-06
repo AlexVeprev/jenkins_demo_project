@@ -4,7 +4,7 @@
 
 **Status**: done
 
-# Links:
+# General links
 
 - [Pipeline Syntax](https://www.jenkins.io/doc/book/pipeline/syntax/)
 - Video [Complete Jenkins Pipeline Tutorial | Jenkinsfile explained](https://www.youtube.com/watch?v=7KCS70sCoK0)
@@ -21,15 +21,20 @@
      - https://plugins.jenkins.io/credentials/
      - ???
 
-3. Prepare env for Jenkins agent:
+3. Configure Jenkins agent(s):
    1. Install jre and docker.
    2. Create user "jenkins", allow him to use Docker.
    3. Create ssh-key pair (doesn't matter what host to use for this) and store _public key_ in ~/.ssh/authorized_keys of Jenkins agent, add _private key_ as Credential using Jenkins UI (Manage Credentials).
    4. Configure agent through Jenkins UI.
 
+4. As alternative (or addition) to statically configured Jenkins agent(s) from item 3 configure Docker Cloud using [Jenkins Docker Plugin](https://plugins.jenkins.io/docker-plugin/) to create Jenkins agents dynamically:
+   1. Install Docker to host and [configure](https://plugins.jenkins.io/docker-plugin/#plugin-content-docker-environment) it.
+   2. Prepare Docker images for dynamic runners, images should contain jre (see examples in `jenkins/Dockerfile.agent_*`.
+   3. Configure Docker Cloud through Jenkins UI.
+
 4. Create project for GitHub; you'll need to add personal access token and some other secrets (see Jenkinsfile) to Credentials.
 
 TODOs: 
 - [ ] Prepare more precise Dockerfile for Jenkins controller with all the needed plugins.
-- [ ] Try and describe dynamically created Jenkins agent using Docker Cloud feature: https://plugins.jenkins.io/docker-plugin/
+- [ ] Prepare more optimized (from size perspective) Docker images for builder and testers (including images with for dynamic agents).
 - [ ] Describe steps more precisely where makes sense.
