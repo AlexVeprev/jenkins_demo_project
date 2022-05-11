@@ -15,14 +15,14 @@ pipeline {
                 //
                 // OPTION #2: build the image on the fly
                 //
-                // dockerfile {
-                //     filename "jenkins/Dockerfile.builder"
-                // }
+                dockerfile {
+                    filename "jenkins/Dockerfile.builder"
+                }
 
                 //
                 // OPTION #3: use Docker Cloud (should be pre-configured), uses GitHub Container Registry under the hood
                 //
-                label "docker-cloud-builder"
+                // label "docker-cloud-builder"
             }
             steps {
                 sh '''
@@ -53,17 +53,18 @@ pipeline {
                     //     registryUrl 'https://ghcr.io'
                     //     registryCredentialsId 'ghcr_token'
                     // }
+
                     //
                     // OPTION #2: build images on the fly
                     //
-                    // dockerfile {
-                    //     filename "jenkins/Dockerfile.tester_${OS}"
-                    // }
+                    dockerfile {
+                        filename "jenkins/Dockerfile.tester_${OS}"
+                    }
 
                     //
                     // OPTION #3: use Docker Cloud (should be pre-configured), uses GitHub Container Registry under the hood
                     //
-                    label "docker-cloud-tester-${OS}"
+                    // label "docker-cloud-tester-${OS}"
                 }
                 stages {
                     stage('Test') {
